@@ -1,11 +1,17 @@
 from pathlib import Path
-from dash import callback, Input, Output
+import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
-from dash import dcc, html
+from dash import Input, Output, callback, dcc, html, no_update
 from dash import no_update
 DATA_PATH = Path(__file__).resolve().parent.parent / "datas" / "avocado.csv"
+
+try:
+    dash.register_page(__name__, path="/", name="Page 1")
+except dash.exceptions.PageError:
+    pass
+
 
 REGIONS_TOTALS = [
     "MidSouth",
@@ -132,3 +138,4 @@ def update_region_graph(selected_region):
         return no_update
 
     return build_region_figure(df, selected_region)
+layout = create_layout()

@@ -1,9 +1,15 @@
 from pathlib import Path
+import dash
 
 import dash_bootstrap_components as dbc
 from dash import dcc, html
 
 DOCS_PATH = Path(__file__).resolve().parent.parent / "docs"
+
+try:
+    dash.register_page(__name__, path="/page3", name="Page 3")
+except dash.exceptions.PageError:
+    pass
 
 
 def load_markdown(filename: str) -> str:
@@ -48,3 +54,4 @@ def create_layout():
         fluid=True,
         className="py-4",
     )
+layout = create_layout()

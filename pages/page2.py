@@ -3,6 +3,12 @@ from pathlib import Path
 import dash_bootstrap_components as dbc
 import pandas as pd
 from dash import dash_table, html
+import dash
+
+try:
+    dash.register_page(__name__, path="/page2", name="Page 2")
+except dash.exceptions.PageError:
+    pass
 
 DATA_PATH = Path(__file__).resolve().parent.parent / "datas" / "avocado.csv"
 
@@ -107,3 +113,4 @@ def create_layout():
         fluid=True,
         className="py-4",
     )
+layout = create_layout()
