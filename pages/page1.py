@@ -1,17 +1,17 @@
 from pathlib import Path
+
 import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
 from dash import Input, Output, callback, dcc, html, no_update
-from dash import no_update
+
 DATA_PATH = Path(__file__).resolve().parent.parent / "datas" / "avocado.csv"
 
 try:
     dash.register_page(__name__, path="/", name="Page 1")
 except dash.exceptions.PageError:
     pass
-
 
 REGIONS_TOTALS = [
     "MidSouth",
@@ -24,8 +24,7 @@ REGIONS_TOTALS = [
 
 
 def load_data() -> pd.DataFrame:
-    df = pd.read_csv(DATA_PATH)
-    return df
+    return pd.read_csv(DATA_PATH)
 
 
 def build_totals_figure(df: pd.DataFrame):
@@ -65,6 +64,11 @@ def build_region_figure(df: pd.DataFrame, region: str):
     return fig
 
 
+def get_region_total_text(df: pd.DataFrame, region: str) -> str:
+    total = df.loc[df["region"] == region, "Total Volume"].sum()
+    return f"Volume total cumulé : {total:,.0f}".replace(",", " ")
+
+
 def create_layout():
     df = load_data()
     default_region = "TotalUS"
@@ -73,7 +77,9 @@ def create_layout():
         [
             dbc.Card(
                 [
-                    dbc.CardHeader(html.H2("Page 1 - Comparaison des volumes", className="mb-0")),
+                    dbc.CardHeader(
+                        html.H2("Page 1 - Comparaison des volumes", className="mb-0")
+                    ),
                     dbc.CardBody(
                         [
                             dbc.Row(
@@ -82,7 +88,6 @@ def create_layout():
                                         dcc.Graph(
                                             id="page1-totals-graph",
                                             figure=build_totals_figure(df),
-                                            style={"display": "block"},
                                         ),
                                         md=7,
                                         xs=12,
@@ -102,6 +107,11 @@ def create_layout():
                                                 ],
                                                 value=default_region,
                                                 className="mb-3",
+                                            ),
+                                            html.Div(
+                                                id="page1-region-total",
+                                                children=get_region_total_text(df, default_region),
+                                                className="mb-3 fw-bold text-info",
                                             ),
                                             dcc.Graph(
                                                 id="page1-region-graph",
@@ -124,18 +134,25 @@ def create_layout():
         className="py-4",
     )
 
+
 @callback(
     Output("page1-region-graph", "figure"),
+    Output("page1-region-total", "children"),
     Input("page1-region-select", "value"),
 )
 def update_region_graph(selected_region):
     if selected_region is None:
-        return no_update
+        return no_update, no_update
 
     df = load_data()
 
     if selected_region not in df["region"].unique():
-        return no_update
+        return no_update, no_update
 
-    return build_region_figure(df, selected_region)
+    return (
+        build_region_figure(df, selected_region),
+        get_region_total_text(df, selected_region),
+    )
+
+
 layout = create_layout()

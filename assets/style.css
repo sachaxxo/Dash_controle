@@ -23,3 +23,8 @@ body {
 h1, h2, h3 {
     color: white;
 }
+
+.card:hover {
+    transform: scale(1.01);
+    transition: 0.2s ease;
+}

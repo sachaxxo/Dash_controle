@@ -55,3 +55,9 @@ def create_layout():
         className="py-4",
     )
 layout = create_layout()
+
+dcc.Loading(
+    id="loading",
+    type="circle",
+    children=html.Div(id="page3-content")
+)

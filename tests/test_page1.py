@@ -45,3 +45,11 @@ def test_build_region_figure():
     df = load_data()
     fig = build_region_figure(df, "TotalUS")
     assert fig is not None
+    
+from pages.page1 import get_region_total_text, load_data
+
+
+def test_get_region_total_text():
+    df = load_data()
+    text = get_region_total_text(df, "TotalUS")
+    assert "Volume total cumulé" in text
