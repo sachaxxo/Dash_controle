@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from dash import callback, Input, Output
 import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
@@ -116,3 +116,11 @@ def create_layout():
         fluid=True,
         className="py-4",
     )
+
+@callback(
+    Output("page1-region-graph", "figure"),
+    Input("page1-region-select", "value"),
+)
+def update_region_graph(selected_region):
+    df = load_data()
+    return build_region_figure(df, selected_region)

@@ -2,7 +2,7 @@ from dash import dcc
 import dash_bootstrap_components as dbc
 
 from pages.page1 import create_layout
-
+from pages.page1 import build_region_figure, load_data
 
 def test_page1_layout_exists():
     layout = create_layout()
@@ -31,3 +31,11 @@ def test_page1_contains_two_graphs():
             graph_count += 1
 
     assert graph_count == 2
+
+    
+
+
+def test_build_region_figure():
+    df = load_data()
+    fig = build_region_figure(df, "TotalUS")
+    assert fig is not None
