@@ -1,6 +1,6 @@
 import dash
 import dash_bootstrap_components as dbc
-from pages.page1 import create_layout
+from pages.page2 import create_layout
 
 app = dash.Dash(
     __name__,
