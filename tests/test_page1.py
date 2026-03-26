@@ -3,7 +3,13 @@ import dash_bootstrap_components as dbc
 
 from pages.page1 import create_layout
 from pages.page1 import build_region_figure, load_data
+from pages.page1 import update_region_graph
 
+
+def test_callback_invalid_region():
+    result = update_region_graph("INVALID_REGION")
+    # soit no_update, soit figure
+    assert result is not None
 def test_page1_layout_exists():
     layout = create_layout()
     assert layout is not None

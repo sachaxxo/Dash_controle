@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
 from dash import dcc, html
-
+from dash import no_update
 DATA_PATH = Path(__file__).resolve().parent.parent / "datas" / "avocado.csv"
 
 REGIONS_TOTALS = [
@@ -76,6 +76,7 @@ def create_layout():
                                         dcc.Graph(
                                             id="page1-totals-graph",
                                             figure=build_totals_figure(df),
+                                            style={"display": "block"},
                                         ),
                                         md=7,
                                         xs=12,
@@ -122,5 +123,12 @@ def create_layout():
     Input("page1-region-select", "value"),
 )
 def update_region_graph(selected_region):
+    if selected_region is None:
+        return no_update
+
     df = load_data()
+
+    if selected_region not in df["region"].unique():
+        return no_update
+
     return build_region_figure(df, selected_region)
