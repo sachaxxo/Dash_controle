@@ -1,0 +1,4 @@
+## Installation
+
+```bash
+uv sync
