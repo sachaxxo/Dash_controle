@@ -9,3 +9,17 @@ body {
 h2 {
     font-weight: 700;
 }
+body {
+    background-image: url("/assets/BG.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+.card {
+    background-color: rgba(0, 0, 0, 0.75);
+    border-radius: 10px;
+}
+
+h1, h2, h3 {
+    color: white;
+}
